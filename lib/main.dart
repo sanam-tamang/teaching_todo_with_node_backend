@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_with_node/config/color_pallet.dart';
+import 'package:todo_with_node/logics/auth_cubit/auth_cubit.dart';
 import 'package:todo_with_node/pages/sign_up_page.dart';
 
 void main() {
@@ -11,13 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: ColorPallet.mainColor),
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (context) => AuthCubit())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: ColorPallet.mainColor),
+        ),
+        home: const SignUpPage(),
       ),
-      home: const SignUpPage(),
     );
   }
 }

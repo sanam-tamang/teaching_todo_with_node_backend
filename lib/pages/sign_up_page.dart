@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:todo_with_node/logics/auth_cubit/auth_cubit.dart';
+import 'package:todo_with_node/pages/home_page.dart';
+import 'package:todo_with_node/utils/app_toast.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -90,11 +94,40 @@ class _SignUpPageState extends State<SignUpPage> {
 
                     SizedBox(
                       width: double.maxFinite,
-                      child: FilledButton(
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() == true) {}
+                      child: BlocConsumer<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          if (state is AuthLoaded) {
+                            FlutterToast.showToast(context, msg: state.msg);
+
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                            );
+                            
+                          } else if (state is AuthFailure) {
+                            FlutterToast.showToast(context, msg: state.msg);
+                          }
                         },
-                        child: Text("Sign up"),
+                        builder: (context, state) {
+                          return FilledButton(
+                            onPressed: () {
+                              if (_formKey.currentState?.validate() == true) {
+                                context.read<AuthCubit>().signUp(
+                                  name: _nameController.text,
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                );
+                              }
+                            },
+                            child:
+                                state is AuthLoading
+                                    ? CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                    : Text("Sign up"),
+                          );
+                        },
                       ),
                     ),
                   ],
