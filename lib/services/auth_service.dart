@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:todo_with_node/config/api.dart';
 
@@ -20,7 +18,6 @@ class AuthService {
       if (response.statusCode == 200) {
         return 'Sign up successful';
       } else {
-        
         throw Exception('Failed to sign up');
       }
     } catch (e) {
@@ -28,3 +25,4 @@ class AuthService {
     }
   }
 }
+ 
