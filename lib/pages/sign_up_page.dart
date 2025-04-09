@@ -104,7 +104,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 builder: (context) => HomePage(),
                               ),
                             );
-                            
                           } else if (state is AuthFailure) {
                             FlutterToast.showToast(context, msg: state.msg);
                           }
